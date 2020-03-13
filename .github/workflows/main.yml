@@ -16,7 +16,7 @@ jobs:
       run:  sudo apt-get update && sudo apt-get install python3 python3-pip python3-setuptools
 
     - name: install virtualenv
-      run:  pip3 install virtualenv && easy_install virutalenv
+      run:  pip3 install virtualenv
 
     - name: create a virtualenv
       run:  virtualenv -p $(which python) ansible-test-virtualenv
