@@ -20,3 +20,9 @@ jobs:
 
     - name: install virtualenv
       run:  pip install setuptools && pip install virtualenv
+
+    - name: create a virtualenv
+      run:  virtualenv -p $(which python) ansible-test-virtualenv
+
+    - name: source the virtualenv
+      run:  source ansible-test-virtualenv/usr/local/bin/activate
