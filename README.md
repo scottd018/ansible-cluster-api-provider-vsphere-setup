@@ -21,13 +21,19 @@ cd ansible-cluster-api-provider-vsphere-setup
 Create a virtualenv to work in and activate the virtual environment:
 
 ```
+# create the virtualenv
 virtualenv -p <PATH_TO_PYTHON_EXE> <MY_VIRTUAL_ENV_NAME>
+
+# activate the virtualenv
 source <MY_VIRTUAL_ENV_NAME>/bin/activate
 ```
 
-Install the requirements:
+Install the requirements, which will subsequently install Ansible as well:
 ```
+# install python module requirements
 pip install -r requirements.txt
+
+# install this repository as an ansible role
 ansible-galaxy install -r requirements.yml
 ```
 
@@ -46,7 +52,7 @@ vcenter_networks:
   'nic0': 'VM Network'
 ```
 
-Create a playbook to utilize the role at **./site.yml**:
+Create a playbook to utilize the role **(example at./site.yml)**:
 ```
 - hosts:        'localhost'
   gather_facts: false
