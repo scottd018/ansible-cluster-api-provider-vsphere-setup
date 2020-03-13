@@ -34,13 +34,13 @@ jobs:
       run: |
         sudo apt-get install wget -y && \
         wget https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz && \
-        tar zxvf go1.12.7.linux-amd64.tar.gz && \
-        mv go /usr/local 
+        tar zxvf go1.12.7.linux-amd64.tar.gz -C ${HOME}
 
     - name: setup go
       run: |
-        export GOROOT=/usr/local/go && \
-        mkdir -p ${HOME}/go && export GOPATH=${HOME}/go && \
+        export GOROOT=${HOME}/go && \
+        export GOPATH=${HOME}/go_work && \
+        mkdir -p ${GOPATH} && \
         export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
     - name: install and start the vcenter simulator (vcsim)
