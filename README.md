@@ -1,6 +1,6 @@
 # ansible-cluster-api-provider-vsphere-setup
 
-This Ansible role will setup a vSphere provider in preparation for using cluster-api.  Specifically, the following steps occur:
+This Ansible role will setup a vSphere provider in preparation for using cluster-api.  This is designed to replace and/or supplement steps at https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/blob/master/docs/getting_started.md#vsphere-requirements. Specifically, the following steps occur:
 
 - Download and import supported OVAs into vCenter.
 
