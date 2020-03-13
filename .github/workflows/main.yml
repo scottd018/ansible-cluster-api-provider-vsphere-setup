@@ -46,7 +46,7 @@ jobs:
     - name: install and start the vcenter simulator (vcsim)
       run: |
         go get -u github.com/vmware/govmomi/vcsim && \
-        go get -u go get -u github.com/vmware/govmomi/govc && \
+        go get -u github.com/vmware/govmomi/govc && \
         nohup vcsim &
 
     - name: ensure vcsim is running
