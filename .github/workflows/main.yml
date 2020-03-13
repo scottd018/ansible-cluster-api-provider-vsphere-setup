@@ -21,6 +21,9 @@ jobs:
     - name: source the virtualenv
       run:  source ansible-test-virtualenv/bin/activate
 
+    - name: upgrade pip
+      run:  pip3 install --upgrade pip
+
     - name: install the required python modules
       run:  pip3 install -r requirements.txt
 
