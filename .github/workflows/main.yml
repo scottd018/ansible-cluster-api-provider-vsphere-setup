@@ -43,16 +43,10 @@ jobs:
         mkdir -p ${GOPATH} && \
         export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
-    - name: debug
-      run: |
-        echo $GOROOT && \
-        echo $GOPATH && \
-        ls $GOROOT && \
-        ls $GOPATH && \
-        sudo find / -name "*govc*"
-
     - name: install and start the vcenter simulator (vcsim)
       run: |
+        echo $GOPATH && echo $GOROOT && \
+        ls $GOPATH && ls $GOROOT && \
         go get -u github.com/vmware/govmomi/vcsim && \
         go get -u github.com/vmware/govmomi/govc && \
         nohup vcsim &
