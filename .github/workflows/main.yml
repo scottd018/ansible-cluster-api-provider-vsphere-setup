@@ -29,3 +29,12 @@ jobs:
 
     - name: install the required ansible roles
       run:  ansible-galaxy install -r requirements.yml
+
+    - name: install go
+      run:  sudo apt-get install software-properties-common -y && add-apt-repository ppa:longsleep/golang-backports && apt install golang-go -y
+
+    - name: setup go
+      run:  mkdir -p ${HOME}/go && export GOPATH=${HOME}/go
+
+    - name: install vcsim
+      run:  go get -u github.com/vmware/govmomi/vcsim
