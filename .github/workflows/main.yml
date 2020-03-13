@@ -18,6 +18,9 @@ jobs:
     - name: install virtualenv
       run:  pip3 install virtualenv --user
 
+    - name: debug
+      run:  find / -name "*virtualenv*"
+
     - name: create a virtualenv
       run:  virtualenv -p $(which python) ansible-test-virtualenv
 
