@@ -1,0 +1,16 @@
+name: ci
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: install python
+      run:  apt-get update && apt-get install python3.6
