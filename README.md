@@ -2,7 +2,9 @@
 
 This Ansible role will setup a vSphere provider in preparation for using cluster-api.  This is designed to replace and/or supplement steps at https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/blob/master/docs/getting_started.md#vsphere-requirements. Specifically, the following steps occur:
 
-- Download and import supported OVAs into vCenter.
+- Download and import supported OVAs into vCenter as virtual machines.
+- Snapshot the virtual machines (needed for linked clones).
+- Mark the virtual machines as templates.
 
 ## Requirements
 
