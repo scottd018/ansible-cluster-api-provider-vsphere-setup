@@ -17,29 +17,40 @@ jobs:
         sudo apt-get update && \
         sudo apt-get install build-essential python3 python3-pip python3-setuptools python3-venv python3-dev
 
-    - name: create a virtualenv
-      run:  python3 -m venv ansible-test-virtualenv
-
-    - name: source the virtualenv
-      run:  source ansible-test-virtualenv/bin/activate
-
-    - name: upgrade pip
-      run:  pip3 install --upgrade pip
+    - name: setup the virtualenv
+      run: |
+        python3 -m venv ansible-test-virtualenv && \
+        source ansible-test-virtualenv/bin/activate
 
     - name: install the required python modules
-      run:  pip3 install -r requirements.txt
+      run: |
+        pip3 install --upgrade pip && \
+        pip3 install -r requirements.txt
 
     - name: install the required ansible roles
       run:  ansible-galaxy install -r requirements.yml
 
     - name: install go
       run: |
-         sudo apt-get install software-properties-common -y && \
-         sudo add-apt-repository ppa:longsleep/golang-backports && \
-         sudo apt install golang-go -y
+        sudo apt-get install wget -y && \
+        sudo wget https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz && \
+        sudo tar zxvf go1.12.7.linux-amd64.tar.gz &&\
+        sudo mv go /usr/local 
+
+#    - name: install go
+#      run: |
+#         sudo apt-get install software-properties-common -y && \
+#         sudo add-apt-repository ppa:longsleep/golang-backports && \
+#         sudo apt install golang-go -y
 
     - name: setup go
-      run:  mkdir -p ${HOME}/go && export GOPATH=${HOME}/go
+      run: |
+        export GOROOT=/usr/local/go && \
+        mkdir -p ${HOME}/go && export GOPATH=${HOME}/go \
+        export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+#    - name: setup go
+#      run:  mkdir -p ${HOME}/go && export GOPATH=${HOME}/go
 
     - name: install the vcenter simulator (vcsim)
       run:  go get -u github.com/vmware/govmomi/vcsim
