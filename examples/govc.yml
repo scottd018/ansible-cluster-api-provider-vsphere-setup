@@ -1,0 +1,19 @@
+---
+# this is an example vars file for deploying to vcenter
+
+#
+# NOTE: we must download the ova first and upload to vcenter second.  this is because
+#       the vmware_deploy_ovf module does not support deploying ova/ovf from url
+#
+ova_download_directory: "${HOME}"
+
+vcenter_hostname:   '127.0.0.1'
+vcenter_port:       8989
+vcenter_username:   'user'
+vcenter_password:   'pass'
+vcenter_datacenter: 'DC0'
+vcenter_cluster:    'DC0_C0'
+vcenter_datastore:  'LocalDS_0'
+vcenter_folder:     "/{{ vcenter_datacenter }}/vm"
+vcenter_networks:   
+  'nic0': 'VM Network'

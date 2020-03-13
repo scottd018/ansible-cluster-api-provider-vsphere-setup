@@ -1,4 +1,7 @@
 ---
+# testing
+test: false
+
 # set the download location for the ovas
 ova_download_directory: "${HOME}"
 

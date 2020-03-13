@@ -1,0 +1,4 @@
+---
+- src:     'https://github.com/scottd018/ansible-cluster-api-provider-vsphere-setup.git'
+  version: 'master'
+  name:    'ansible-cluster-api-provider-vsphere-setup'

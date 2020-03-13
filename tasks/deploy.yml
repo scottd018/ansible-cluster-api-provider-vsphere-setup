@@ -29,8 +29,16 @@
     wait:                false
     wait_for_ip_address: false
     validate_certs:      false
-  register:     vm_deploy_response
-  delegate_to: 'localhost'
+  register:      vm_deploy_response
+  delegate_to:   'localhost'
+  until:         vm_deploy_response.instance is defined
+  retries:       3
+  ignore_errors: "{{ test | bool }}"
+
+#
+# NOTE: the above and below tasks generate errors when using vcsim for testing.  only ignore errors if we explicitly pass in a test
+#       parameter as true
+#
 
 - name: 'ensure the virtual machine is not a template and is powered off'
   vmware_guest:
@@ -46,7 +54,9 @@
     datastore:      "{{ vcenter_datastore }}"
     folder:         "{{ vm_deploy_response.instance.hw_folder }}"
     validate_certs: false
-  delegate_to: 'localhost'
+  delegate_to:   'localhost'
+  when:          not vm_deploy_response.changed
+  ignore_errors: "{{ test | bool }}"
 
 - name: 'take a snapshot of the vm used for linked clone deployment'
   vmware_guest_snapshot:
@@ -57,7 +67,7 @@
     moid:           "{{ vm_deploy_response.instance.moid }}"
     datacenter:     "{{ vcenter_datacenter }}"
     state:          'present'
-    snapshot_name:  'cluster-api pre-deploy snapshot'
+    snapshot_name:  'cluster-api pre-deploy snapshot2'
     description:    'Snapshot taken by Ansible prior to cluster-api workload cluster deployment'
     quiesce:        false
     memory_dump:    false
