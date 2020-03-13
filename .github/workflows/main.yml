@@ -14,3 +14,9 @@ jobs:
 
     - name: install python
       run:  sudo apt-get update && sudo apt-get install python3.6
+
+    - name: print the working directory
+      run:  pwd
+
+    - name: install virtualenv
+      run:  pip install setuptools && pip install virtualenv
