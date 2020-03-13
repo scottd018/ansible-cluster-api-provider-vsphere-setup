@@ -1,4 +1,4 @@
-name: ci
+name: ci-ansible-capv-setup
 
 on:
   push:
@@ -32,6 +32,7 @@ jobs:
 
     - name: install go
       run: |
+        echo $GOPATH && echo $GOROOT && \
         sudo apt-get install wget -y && \
         wget https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz && \
         tar zxvf go1.12.7.linux-amd64.tar.gz -C ${HOME}
