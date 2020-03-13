@@ -1,0 +1,81 @@
+---
+#
+# TODO: we must first download and reupload, as the vmware_deploy_ovf module does not support direct upload
+#       to vcenter, even though the vcenter api does support it.
+#
+- name: 'download the ova to a local destination'
+  uri:
+    url:     "{{ template_ova_url }}"
+    dest:    "{{ template_ova }}"
+    creates: "{{ template_ova }}"
+  delegate_to: 'localhost'
+
+- name: 'deploy a virtual machine from an ova'
+  vmware_deploy_ovf:
+    hostname:            "{{ vcenter_hostname }}"
+    port:                "{{ vcenter_port | default(omit) }}"
+    username:            "{{ vcenter_username }}"
+    password:            "{{ vcenter_password }}"
+    ova:                 "{{ template_ova }}"
+    name:                "{{ template_name }}"
+    allow_duplicates:    false
+    datacenter:          "{{ vcenter_datacenter }}"
+    cluster:             "{{ vcenter_cluster }}"
+    datastore:           "{{ vcenter_datastore }}"
+    disk_provisioning:   "{{ vcenter_disk_type | default(omit) }}"
+    folder:              "{{ vcenter_folder | default(omit) }}"
+    networks:            "{{ vcenter_networks }}"  # this is a network mapping from ova to your vcenter network, e.g. 'VM Network': 'VM Network')
+    power_on:            false
+    wait:                false
+    wait_for_ip_address: false
+    validate_certs:      false
+  register:     vm_deploy_response
+  delegate_to: 'localhost'
+
+- name: 'ensure the virtual machine is not a template and is powered off'
+  vmware_guest:
+    hostname:       "{{ vcenter_hostname }}"
+    port:           "{{ vcenter_port | default(omit) }}"
+    username:       "{{ vcenter_username }}"
+    password:       "{{ vcenter_password }}"
+    name:           "{{ template_name }}"
+    is_template:    false
+    state:          'present'
+    datacenter:     "{{ vcenter_datacenter }}"
+    cluster:        "{{ vcenter_cluster }}"
+    datastore:      "{{ vcenter_datastore }}"
+    folder:         "{{ vm_deploy_response.instance.hw_folder }}"
+    validate_certs: false
+  delegate_to: 'localhost'
+
+- name: 'take a snapshot of the vm used for linked clone deployment'
+  vmware_guest_snapshot:
+    hostname:       "{{ vcenter_hostname }}"
+    port:           "{{ vcenter_port | default(omit) }}"
+    username:       "{{ vcenter_username }}"
+    password:       "{{ vcenter_password }}"
+    moid:           "{{ vm_deploy_response.instance.moid }}"
+    datacenter:     "{{ vcenter_datacenter }}"
+    state:          'present'
+    snapshot_name:  'cluster-api pre-deploy snapshot'
+    description:    'Snapshot taken by Ansible prior to cluster-api workload cluster deployment'
+    quiesce:        false
+    memory_dump:    false
+    validate_certs: false  
+  delegate_to: 'localhost'
+
+- name: 'convert the virtual machine to a template'
+  vmware_guest:
+    hostname:       "{{ vcenter_hostname }}"
+    port:           "{{ vcenter_port | default(omit) }}"
+    username:       "{{ vcenter_username }}"
+    password:       "{{ vcenter_password }}"
+    name:           "{{ template_name }}"
+    is_template:    true
+    state:          'present'
+    datacenter:     "{{ vcenter_datacenter }}"
+    cluster:        "{{ vcenter_cluster }}"
+    datastore:      "{{ vcenter_datastore }}"
+    folder:         "{{ vm_deploy_response.instance.hw_folder }}"
+    validate_certs: false
+  delegate_to: 'localhost'

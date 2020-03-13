@@ -1,0 +1,46 @@
+---
+# set the download location for the ovas
+ova_download_directory: "${HOME}"
+
+# set the default versions for the workload cluster
+kubernetes_version:   'v1.17.3'
+haproxy_capv_version: 'v0.6.0'
+
+# set the default operating system for kubernetes for the workload cluster
+kubernetes_operating_system: 'centos7'
+
+# centos images
+kubernetes_centos7_ova_url: "http://storage.googleapis.com/capv-images/release/{{ kubernetes_version }}/centos-7-kube-{{ kubernetes_version }}.ova"
+
+# ubunutu images
+kubernetes_ubuntu18_04_ova_url: "http://storage.googleapis.com/capv-images/release/{{ kubernetes_version }}/ubuntu-1804-kube-{{ kubernetes_version }}.ova"
+
+# photon images
+kubernetes_photon3_ova_url: "http://storage.googleapis.com/capv-images/release/{{ kubernetes_version }}/photon-3-kube-{{ kubernetes_version }}.ova"
+
+# haproxy images
+haproxy_ova_url: "https://storage.googleapis.com/capv-images/extra/haproxy/release/{{ haproxy_capv_version }}/capv-haproxy-{{ haproxy_capv_version }}.ova"
+
+# set the template names
+kubernetes_template_name: "{{ kubernetes_operating_system }}-capv-kube-{{ kubernetes_version }}-template"
+haproxy_template_name:    "haproxy-{{ haproxy_capv_version }}-capv-kube-{{ kubernetes_version }}-template"
+
+# set the download location for the ovas
+kubernetes_ova_download_file: "{{ ova_download_directory }}/{{ kubernetes_template_name }}.ova"
+haproxy_ova_download_file:    "{{ ova_download_directory }}/{{ haproxy_template_name }}.ova"
+
+# set the image based on the operating system
+kubernetes_ova_url: |
+  {% if kubernetes_operating_system == 'centos7' -%}
+  {{ kubernetes_centos7_ova_url }}
+  {%- elif kubernetes_operating_system == 'ubuntu_18_04' -%}
+  {{ kubernetes_ubuntu_18_04_ova_url }}
+  {%- elif kubernetes_operating_system == 'photon3' -%}
+  {{ kubernetes_photon3_ova_url }}
+  {%- else -%}
+  None
+  {%- endif %}
+
+# set the default values from the template
+vcenter_networks:
+  'nic0': 'VM Network'
