@@ -15,7 +15,6 @@ env:
   GOVERSION: '1.12.7'
   GOROOT:    "${HOME}/go"
   GOPATH:    "${HOME}/go_work"
-  PATH:      "$GOPATH/bin:$GOROOT/bin:$PATH"
 
 # pipeline definition
 jobs:
@@ -42,8 +41,6 @@ jobs:
       - name: 'install the required ansible roles'
         run:  'ansible-galaxy install -r requirements.yml'
 
-  #        export GOROOT=${HOME}/go && \
-  #        export GOPATH=${HOME}/go_work && \
       - name: 'install and setup go'
         run: |
           mkdir -p ${GOPATH} && \
@@ -51,14 +48,12 @@ jobs:
           wget https://dl.google.com/go/go${GOVERSION}.linux-amd64.tar.gz && \
           tar zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${HOME}
 
-  #        export GOROOT=${HOME}/go && \
-  #        export GOPATH=${HOME}/go_work && \
-  #        export PATH=$GOPATH/bin:$GOROOT/bin:$PATH && \
-
       - name: 'install and start the vcenter simulator (vcsim)'
         run: |
           go get -u github.com/vmware/govmomi/vcsim && \
           nohup vcsim &
+        env:
+          PATH: "$GOPATH/bin:$GOROOT/bin:$PATH"
 
       - name: 'run ansible against the simulated vcenter environment'
         run:  "python3 $(which ansible-playbook) -vv site.yml -e @examples/govc.yml -e 'test=true'"
