@@ -13,8 +13,6 @@ on:
 # environment
 env:
   GOVERSION: '1.12.7'
-  GOROOT:    "${HOME}/go"
-  GOPATH:    "${HOME}/go_work"
 
 # pipeline definition
 jobs:
@@ -43,6 +41,8 @@ jobs:
 
       - name: 'install and setup go'
         run: |
+          export GOROOT=${HOME}/go && \
+          export GOPATH=${HOME}/go_work && \
           mkdir -p ${GOPATH} && \
           sudo apt-get install wget -y && \
           wget https://dl.google.com/go/go${GOVERSION}.linux-amd64.tar.gz && \
@@ -50,7 +50,9 @@ jobs:
 
       - name: 'install and start the vcenter simulator (vcsim)'
         run: |
-          export PATH="$GOPATH/bin:$GOROOT/bin:$PATH" && \
+          export GOROOT=${HOME}/go && \
+          export GOPATH=${HOME}/go_work && \
+          export PATH=$GOPATH/bin:$GOROOT/bin:$PATH && \
           go get -u github.com/vmware/govmomi/vcsim && \
           nohup vcsim &
 
