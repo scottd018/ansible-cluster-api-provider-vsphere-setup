@@ -1,56 +1,64 @@
-name: ci-ansible-capv-setup
-env:
-  GOVERSION="1.12.7"
-  GOROOT="${HOME}/go"
-  GOPATH="${HOME}/go_work"
-  PATH="$GOPATH/bin:$GOROOT/bin:$PATH"
+# pipeline name
+name: 'ci-ansible-capv-setup'
 
+# triggers
 on:
   push:
-    branches: [ "*" ]
+    branches:
+      - '*'
   pull_request:
-    branches: [ master ]
+    branches:
+      - 'master'
 
+# environment
+env:
+  GOVERSION: '1.12.7'
+  GOROOT:    "${HOME}/go"
+  GOPATH:    "${HOME}/go_work"
+  PATH:      "$GOPATH/bin:$GOROOT/bin:$PATH"
+
+# pipeline definition
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: 'ubuntu-latest'
     steps:
-    - uses: actions/checkout@v2
+      - uses: 'actions/checkout@v2'
 
-    - name: install python
-      run: |
-        sudo apt-get update && \
-        sudo apt-get install build-essential python3 python3-pip python3-setuptools python3-venv python3-dev
+      - name: 'install python'
+        run: |
+          sudo apt-get update && \
+          sudo apt-get install build-essential python3 python3-pip python3-setuptools python3-venv python3-dev
 
-    - name: setup the virtualenv
-      run: |
-        python3 -m venv ansible-test-virtualenv && \
-        source ansible-test-virtualenv/bin/activate
+      - name: 'setup the virtualenv'
+        run: |
+          python3 -m venv ansible-test-virtualenv && \
+          source ansible-test-virtualenv/bin/activate
 
-    - name: install the required python modules
-      run: |
-        pip3 install --upgrade pip && \
-        pip3 install -r requirements.txt
+      - name: 'install the required python modules'
+        run: |
+          pip3 install --upgrade pip && \
+          pip3 install -r requirements.txt
 
-    - name: install the required ansible roles
-      run:  ansible-galaxy install -r requirements.yml
+      - name: 'install the required ansible roles'
+        run:  'ansible-galaxy install -r requirements.yml'
 
-    - name: install and setup go
-      run: |
-#        export GOROOT=${HOME}/go && \
-#        export GOPATH=${HOME}/go_work && \
-        mkdir -p ${GOPATH} && \
-        sudo apt-get install wget -y && \
-        wget https://dl.google.com/go/go${GOVERSION}.linux-amd64.tar.gz && \
-        tar zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${HOME}
+  #        export GOROOT=${HOME}/go && \
+  #        export GOPATH=${HOME}/go_work && \
+      - name: 'install and setup go'
+        run: |
+          mkdir -p ${GOPATH} && \
+          sudo apt-get install wget -y && \
+          wget https://dl.google.com/go/go${GOVERSION}.linux-amd64.tar.gz && \
+          tar zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${HOME}
 
-    - name: install and start the vcenter simulator (vcsim)
-      run: |
-#        export GOROOT=${HOME}/go && \
-#        export GOPATH=${HOME}/go_work && \
-#        export PATH=$GOPATH/bin:$GOROOT/bin:$PATH && \
-        go get -u github.com/vmware/govmomi/vcsim && \
-        nohup vcsim &
+  #        export GOROOT=${HOME}/go && \
+  #        export GOPATH=${HOME}/go_work && \
+  #        export PATH=$GOPATH/bin:$GOROOT/bin:$PATH && \
 
-    - name: run ansible against the simulated vcenter environment
-      run:  python3 $(which ansible-playbook) -vv site.yml -e @examples/govc.yml -e 'test=true'
+      - name: 'install and start the vcenter simulator (vcsim)'
+        run: |
+          go get -u github.com/vmware/govmomi/vcsim && \
+          nohup vcsim &
+
+      - name: 'run ansible against the simulated vcenter environment'
+        run:  "python3 $(which ansible-playbook) -vv site.yml -e @examples/govc.yml -e 'test=true'"
