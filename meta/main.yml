@@ -1,10 +1,11 @@
+---
 galaxy_info:
-  author: Dustin Scott
-  description: Setup a vSphere provider for use with cluster-api
-  company: VMware
-  license: MIT
-  min_ansible_version: 2.9
-  galaxy_tags: []
-  # noqa 701 : delegated to localhost for api calls so should work on all platforms
+  author: 'Dustin Scott'
+  description: 'Setup a vSphere provider for use with cluster-api'
+  company: 'VMware'
+  license: 'MIT'
+  min_ansible_version: '2.9'
+  galaxy_tags: [ ]
+  # noqa 701 : 'delegated to localhost for api calls so should work on all platforms'
   # platforms:
-dependencies: []
+dependencies: [ ]

@@ -1,0 +1,59 @@
+---
+yaml-files:
+  - 'tasks/*.yml'
+  - 'tasks/*.yaml'
+  - 'meta/*.yml'
+  - 'meta/*.yaml'
+  - 'defaults/*.yml'
+  - 'defaults/*.yaml'
+  - 'site.yml'
+  - 'requirements.yml'
+  - '.yamllint'
+
+rules:
+  braces: 
+    level:             'error'
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+  brackets: 
+    level:             'error'
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+  colons:
+    level:             'error'
+    max-spaces-before: 0
+    max-spaces-after:  -1
+  commas:
+    level:             'error'
+    max-spaces-before: 0
+  comments:
+    level:                   'error'
+    min-spaces-from-content: 2
+    require-starting-space:  true
+  comments-indentation: 'disable'
+  document-end: 'disable'
+  document-start:
+    level:   'error'
+    present: true
+  empty-lines:
+    level: 'error'
+    max:   1
+  empty-values: 'disable'
+  hyphens: 
+    level:            'error'
+    max-spaces-after: 1
+  indentation:
+    level:  'error'
+    spaces: 2
+  key-duplicates: 'enable'
+  key-ordering: 'disable'
+  line-length: 'disable'
+  new-line-at-end-of-file: 'enable'
+  new-lines: 'enable'
+  octal-values: 'disable'
+  quoted-strings: 
+    level:      'error'
+    quote-type: 'any'
+  trailing-spaces: 'enable'
+  truthy:
+    level: 'error'

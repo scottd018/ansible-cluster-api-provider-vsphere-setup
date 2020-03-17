@@ -29,9 +29,9 @@
     wait:                false
     wait_for_ip_address: false
     validate_certs:      false
-  register:      vm_deploy_response
+  register:      'vm_deploy_response'
   delegate_to:   'localhost'
-  until:         vm_deploy_response.instance is defined
+  until:         'vm_deploy_response.instance is defined'
   retries:       3
   ignore_errors: "{{ test | bool }}"
 
@@ -56,7 +56,7 @@
     validate_certs: false
   delegate_to:   'localhost'
   # noqa 503 : no need to run a specific handler for such a simple task
-  when:          not vm_deploy_response.changed
+  when:          'not vm_deploy_response.changed'
   ignore_errors: "{{ test | bool }}"
 
 - name: 'take a snapshot of the vm used for linked clone deployment'

@@ -1,6 +1,7 @@
+---
 - hosts:        'localhost'
   gather_facts: false
   connection:   'local'
   roles:
 
-  - role: 'ansible-cluster-api-provider-vsphere-setup'
+    - role: 'ansible-cluster-api-provider-vsphere-setup'
