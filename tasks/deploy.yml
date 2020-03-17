@@ -55,6 +55,7 @@
     folder:         "{{ vm_deploy_response.instance.hw_folder }}"
     validate_certs: false
   delegate_to:   'localhost'
+  # noqa 503 : no need to run a specific handler for such a simple task
   when:          not vm_deploy_response.changed
   ignore_errors: "{{ test | bool }}"
 
@@ -71,7 +72,7 @@
     description:    'Snapshot taken by Ansible prior to cluster-api workload cluster deployment'
     quiesce:        false
     memory_dump:    false
-    validate_certs: false  
+    validate_certs: false
   delegate_to: 'localhost'
 
 - name: 'convert the virtual machine to a template'
