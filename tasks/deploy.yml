@@ -3,14 +3,28 @@
 # TODO: we must first download and reupload, as the vmware_deploy_ovf module does not support direct upload
 #       to vcenter, even though the vcenter api does support it.
 #
+- name: 'get information about the virtual machine if it exists already'
+  vmware_guest_info:
+    hostname:            "{{ VSPHERE_SERVER }}"
+    port:                "{{ VSPHERE_PORT | default(omit) }}"
+    username:            "{{ VSPHERE_USERNAME }}"
+    password:            "{{ VSPHERE_PASSWORD }}"
+    name:                "{{ template_name }}"
+    datacenter:          "{{ VSPHERE_DATACENTER }}"
+    validate_certs:      false
+  delegate_to: 'localhost'
+  register:    'vm_info_response'
+  when:        'template_name in vsphere_vm_list'
+
 - name: 'download the ova to a local destination'
   uri:
     url:     "{{ template_ova_url }}"
     dest:    "{{ template_ova }}"
     creates: "{{ template_ova }}"
   delegate_to: 'localhost'
+  when:        'template_name not in vsphere_vm_list'
 
-- name: 'deploy a virtual machine from an ova'
+- name: 'ensure the virtual machine exists and deploy if necessary'
   vmware_deploy_ovf:
     hostname:            "{{ VSPHERE_SERVER }}"
     port:                "{{ VSPHERE_PORT | default(omit) }}"
@@ -33,7 +47,12 @@
   delegate_to:   'localhost'
   until:         'vm_deploy_response.instance is defined'
   retries:       3
-  ignore_errors: "{{ test | bool }}"
+  ignore_errors: 'test == true'
+  when:          'template_name not in vsphere_vm_list'
+
+- name: 'set a fact containing information about the virtual machine'
+  set_fact:
+    vm_info: "{{ vm_info_response.instance | default(vm_deploy_response.instance) }}"
 
 #
 # NOTE: the above and below tasks generate errors when using vcsim for testing.  only ignore errors if we explicitly pass in a test
@@ -52,12 +71,11 @@
     datacenter:     "{{ VSPHERE_DATACENTER }}"
     cluster:        "{{ VSPHERE_CLUSTER | default(omit) }}"
     datastore:      "{{ VSPHERE_DATASTORE }}"
-    folder:         "{{ vm_deploy_response.instance.hw_folder }}"
+    folder:         "{{ vm_info.hw_folder }}"
     validate_certs: false
   delegate_to:   'localhost'
   # noqa 503 : no need to run a specific handler for such a simple task
-  when:          'not vm_deploy_response.changed'
-  ignore_errors: "{{ test | bool }}"
+  ignore_errors: 'test == true'
 
 - name: 'take a snapshot of the vm used for linked clone deployment'
   vmware_guest_snapshot:
@@ -65,7 +83,7 @@
     port:           "{{ VSPHERE_PORT | default(omit) }}"
     username:       "{{ VSPHERE_USERNAME }}"
     password:       "{{ VSPHERE_PASSWORD }}"
-    moid:           "{{ vm_deploy_response.instance.moid }}"
+    moid:           "{{ vm_info.moid }}"
     datacenter:     "{{ VSPHERE_DATACENTER }}"
     state:          'present'
     snapshot_name:  'cluster-api pre-deploy snapshot2'
@@ -87,6 +105,6 @@
     datacenter:     "{{ VSPHERE_DATACENTER }}"
     cluster:        "{{ VSPHERE_CLUSTER | default(omit) }}"
     datastore:      "{{ VSPHERE_DATASTORE }}"
-    folder:         "{{ vm_deploy_response.instance.hw_folder }}"
+    folder:         "{{ vm_info.hw_folder }}"
     validate_certs: false
   delegate_to: 'localhost'

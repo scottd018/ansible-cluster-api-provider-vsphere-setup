@@ -1,5 +1,21 @@
 ---
 #
+# NOTE: the below may have a performance implication in large vcenter environments
+#
+- name: 'get a list of virtual machines/templates in the vcenter'
+  vmware_vm_info:
+    hostname:       "{{ VSPHERE_SERVER }}"
+    username:       "{{ VSPHERE_USERNAME }}"
+    password:       "{{ VSPHERE_PASSWORD }}"
+    validate_certs: false
+  register:    'vsphere_vm_list_full'
+  delegate_to: 'localhost'
+
+- name: 'store a list of virtual machine names only'
+  set_fact:
+    vsphere_vm_list: "{{ vsphere_vm_list_full.virtual_machines | map(attribute='guest_name') | list }}"
+
+#
 # KUBERNETES
 #
 - name:          'ensure the kubernetes templates are deployed'
@@ -16,5 +32,5 @@
   include_tasks: 'deploy.yml'
   vars:
     template_name:    "{{ VSPHERE_HAPROXY_TEMPLATE }}"
-    template_ova:     "{{ ova_download_directory }}/{{ VSPHERE_HAPROXY_TEMPLATE }}"
+    template_ova:     "{{ ova_download_directory }}/{{ VSPHERE_HAPROXY_TEMPLATE }}.ova"
     template_ova_url: "{{ haproxy_ova_url | trim }}"
