@@ -25,11 +25,11 @@ kubernetes_photon3_ova_url: "http://storage.googleapis.com/capv-images/release/{
 haproxy_ova_url: "https://storage.googleapis.com/capv-images/extra/haproxy/release/{{ haproxy_capv_version }}/capv-haproxy-{{ haproxy_capv_version }}.ova"
 
 # set the template names
-# 
+#
 # NOTE: we no longer need to defined these as we are expecting our vars to come from the clusterctl vars file
 #
-#kubernetes_template_name: "{{ kubernetes_operating_system }}-capv-kube-{{ kubernetes_version }}-template"
-#haproxy_template_name:    "haproxy-{{ haproxy_capv_version }}-capv-kube-{{ kubernetes_version }}-template"
+# kubernetes_template_name: "{{ kubernetes_operating_system }}-capv-kube-{{ kubernetes_version }}-template"
+# haproxy_template_name:    "haproxy-{{ haproxy_capv_version }}-capv-kube-{{ kubernetes_version }}-template"
 
 # set the image based on the operating system
 kubernetes_ova_url: |
