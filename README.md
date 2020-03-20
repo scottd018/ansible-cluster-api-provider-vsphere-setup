@@ -62,7 +62,7 @@ VSPHERE_SSH_AUTHORIZED_KEY: "ssh-rsa AAAAB3N..."              # The public ssh a
 ```
 
 Create a playbook to utilize the role **(example at ./site.yml)**:
-```
+```yaml
 - hosts:        'localhost'
   gather_facts: false
   connection:   'local'
@@ -71,11 +71,11 @@ Create a playbook to utilize the role **(example at ./site.yml)**:
 ```
 
 Run the playbook:
-```
+```bash
 ansible-playbook -vv ./site.yml -e@~/.cluster-api/clusterctl.yaml
 ```
 
 If you need to override specific variables from the clusterctl.yaml file or the `defaults/main.yml` file, the following is applicable:
-```
-ansible-playbook -vv site.yml -e @/Users/sdustin/.cluster-api/clusterctl.yaml -e "VSPHERE_DATASTORE=my_vmware_datastore VSPHERE_FOLDER='/my-vmware-datacenter/vm/vm_vmware_folder' ova_download_directory='/path/to/ovas'"
+```bash
+ansible-playbook -vv site.yml -e @~/.cluster-api/clusterctl.yaml -e "VSPHERE_DATASTORE=my_vmware_datastore VSPHERE_FOLDER='/my-vmware-datacenter/vm/vm_vmware_folder' ova_download_directory='/path/to/ovas'"
 ```
