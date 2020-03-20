@@ -32,10 +32,10 @@ jobs:
           source ansible-test-virtualenv/bin/activate
 
       - name: 'run yamllint'
-        run: 'yamllint ./'
+        run: 'python3 $(which yamllint) ./'
 
       - name: 'run ansbile-lint'
-        run: 'ansible-lint ./site.yml'
+        run: 'python3 $(which ansible-lint) ./site.yml'
 
       - name: 'install the required python modules'
         run: |
