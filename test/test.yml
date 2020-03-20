@@ -1,0 +1,18 @@
+---
+# this is an example clusterctl vars file for deploying to vcenter
+
+## -- Controller settings -- ##
+VSPHERE_USERNAME: "user"
+VSPHERE_PASSWORD: "pass"
+
+## -- Required workload cluster default settings -- ##
+VSPHERE_SERVER: "127.0.0.1"
+VSPHERE_DATACENTER: "DC0"
+VSPHERE_DATASTORE: "LocalDS_0"
+VSPHERE_NETWORK: "VM Network"
+VSPHERE_RESOURCE_POOL: "*/Resources"
+VSPHERE_FOLDER: "/DC0/vm"
+VSPHERE_TEMPLATE: "test-capv-kube-v1.17.3"
+VSPHERE_HAPROXY_TEMPLATE: "test-haproxy-kube-v1.17.3"
+VSPHERE_SSH_AUTHORIZED_KEY: |
+  my_authorized_key_data
