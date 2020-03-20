@@ -31,6 +31,12 @@ jobs:
           python3 -m venv ansible-test-virtualenv && \
           source ansible-test-virtualenv/bin/activate
 
+      - name: 'run yamllint'
+        run: 'yamllint ./'
+
+      - name: 'run ansbile-lint'
+        run: 'ansible-lint ./site.yml'
+
       - name: 'install the required python modules'
         run: |
           pip3 install --upgrade pip && \
