@@ -5,6 +5,7 @@
 - name: 'get a list of virtual machines/templates in the vcenter'
   vmware_vm_info:
     hostname:       "{{ VSPHERE_SERVER }}"
+    port:           "{{ VSPHERE_PORT | default(omit) }}"
     username:       "{{ VSPHERE_USERNAME }}"
     password:       "{{ VSPHERE_PASSWORD }}"
     validate_certs: false
