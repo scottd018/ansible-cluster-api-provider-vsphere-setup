@@ -5,15 +5,16 @@
 - name:          'ensure the kubernetes templates are deployed'
   include_tasks: 'deploy.yml'
   vars:
-    template_name:    "{{ kubernetes_template_name }}"
-    template_ova:     "{{ kubernetes_ova_download_file }}"
+    template_name:    "{{ VSPHERE_TEMPLATE }}"
+    template_ova:     "{{ ova_download_directory }}/{{ VSPHERE_TEMPLATE }}.ova"
     template_ova_url: "{{ kubernetes_ova_url | trim }}"
+
 #
 # HA PROXY
 #
 - name:          'ensure the haproxy templates are deployed'
   include_tasks: 'deploy.yml'
   vars:
-    template_name:    "{{ haproxy_template_name }}"
-    template_ova:     "{{ haproxy_ova_download_file }}"
+    template_name:    "{{ VSPHERE_HAPROXY_TEMPLATE }}"
+    template_ova:     "{{ ova_download_directory }}/{{ VSPHERE_HAPROXY_TEMPLATE }}"
     template_ova_url: "{{ haproxy_ova_url | trim }}"

@@ -39,6 +39,7 @@ jobs:
       - name: 'install the required ansible roles'
         run:  'ansible-galaxy install -r requirements.yml'
 
+      # TODO: install in container
       - name: 'install and setup go'
         run: |
           export GOROOT=${HOME}/go && \
@@ -48,6 +49,7 @@ jobs:
           wget https://dl.google.com/go/go${GOVERSION}.linux-amd64.tar.gz && \
           tar zxvf go${GOVERSION}.linux-amd64.tar.gz -C ${HOME}
 
+      # TODO: install in container
       - name: 'install and start the vcenter simulator (vcsim)'
         run: |
           export GOROOT=${HOME}/go && \
