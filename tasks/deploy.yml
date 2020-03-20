@@ -3,11 +3,18 @@
 # TODO: we must first download and reupload, as the vmware_deploy_ovf module does not support direct upload
 #       to vcenter, even though the vcenter api does support it.
 #
+- name: 'fail if we do not provide a checksum'
+  fail:
+    msg: "'validate_checksum' is true but no checksum provided"
+  when:
+    - (validate_checksum | bool)
+    - template_ova_checksum is undefined
+
 - name: 'download the ova to a local destination'
-  uri:
-    url:     "{{ template_ova_url }}"
-    dest:    "{{ template_ova }}"
-    creates: "{{ template_ova }}"
+  get_url:
+    url:      "{{ template_ova_url }}"
+    checksum: "{{ template_ova_checksum | default(omit) }}"
+    dest:     "{{ template_ova_file }}"
   delegate_to: 'localhost'
 
 - name: 'deploy a virtual machine from an ova'
@@ -16,7 +23,7 @@
     port:                "{{ VSPHERE_PORT | default(omit) }}"
     username:            "{{ VSPHERE_USERNAME }}"
     password:            "{{ VSPHERE_PASSWORD }}"
-    ova:                 "{{ template_ova }}"
+    ova:                 "{{ template_ova_file }}"
     name:                "{{ template_name }}"
     allow_duplicates:    false
     datacenter:          "{{ VSPHERE_DATACENTER }}"

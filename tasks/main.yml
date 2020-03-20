@@ -2,19 +2,41 @@
 #
 # KUBERNETES
 #
+- name: 'fail with missing checksum if validate_checksum is requested'
+  fail:
+    msg: "'validate_checksum' is true but no checksum provided for file 'kubernetes_ova_file'"
+  when:
+    - (validate_checksum | bool)
+    - kubernetes_ova_checksum is undefined
+    - kubernetes_ova_file is defined
+
 - name:          'ensure the kubernetes templates are deployed'
   include_tasks: 'deploy.yml'
   vars:
-    template_name:    "{{ VSPHERE_TEMPLATE }}"
-    template_ova:     "{{ ova_download_directory }}/{{ VSPHERE_TEMPLATE }}.ova"
-    template_ova_url: "{{ kubernetes_ova_url | trim }}"
+    kubernetes_ova_checksum:    "{{ lookup('url', (kubernetes_ova_checksum_url | trim)) }}"
+    template_name:              "{{ VSPHERE_TEMPLATE }}"
+    template_ova_url:           "{{ kubernetes_ova_url | trim }}"
+    template_ova_file:          "{{ kubernetes_ova_file }}"
+    template_ova_checksum:      "{{ kubernetes_ova_checksum }}"
+    template_ova_checksum_type: "{{ kubernetes_ova_checksum_type }}"
 
 #
 # HA PROXY
 #
+- name: 'fail with missing checksum if validate_checksum is requested'
+  fail:
+    msg: "'validate_checksum' is true but no checksum provided for file 'haproxy_ova_file'"
+  when:
+    - (validate_checksum | bool)
+    - haproxy_ova_checksum is undefined
+    - haproxy_ova_file is defined
+
 - name:          'ensure the haproxy templates are deployed'
   include_tasks: 'deploy.yml'
   vars:
-    template_name:    "{{ VSPHERE_HAPROXY_TEMPLATE }}"
-    template_ova:     "{{ ova_download_directory }}/{{ VSPHERE_HAPROXY_TEMPLATE }}"
-    template_ova_url: "{{ haproxy_ova_url | trim }}"
+    haproxy_ova_checksum:       "{{ lookup('url', (haproxy_ova_checksum_url | trim)) }}"
+    template_name:              "{{ VSPHERE_HAPROXY_TEMPLATE }}"
+    template_ova_url:           "{{ haproxy_ova_url | trim }}"
+    template_ova_file:          "{{ haproxy_ova_file }}"
+    template_ova_checksum:      "{{ haproxy_ova_checksum }}"
+    template_ova_checksum_type: "{{ haproxy_ova_checksum_type }}"
