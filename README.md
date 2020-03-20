@@ -61,7 +61,7 @@ VSPHERE_SSH_AUTHORIZED_KEY: "ssh-rsa AAAAB3N..."              # The public ssh a
                                                               #   or are using another solution.
 ```
 
-Create a playbook to utilize the role **(example at./site.yml)**:
+Create a playbook to utilize the role **(example at ./site.yml)**:
 ```
 - hosts:        'localhost'
   gather_facts: false

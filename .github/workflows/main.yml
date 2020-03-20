@@ -59,4 +59,4 @@ jobs:
           nohup vcsim &
 
       - name: 'run ansible against the simulated vcenter environment'
-        run:  "python3 $(which ansible-playbook) -vv site.yml -e @examples/govc.yml -e 'test=true VSPHERE_PORT=8989'"
+        run:  "python3 $(which ansible-playbook) -vv site.yml -e @test/test.yml -e 'test=true VSPHERE_PORT=8989'"
