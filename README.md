@@ -77,5 +77,5 @@ ansible-playbook -vv ./site.yml -e@~/.cluster-api/clusterctl.yaml
 
 If you need to override specific variables from the clusterctl.yaml file or the `defaults/main.yml` file, the following is applicable:
 ```
-ansible-playbook -vv site.yml -e @/Users/sdustin/.cluster-api/clusterctl.yaml -e "VSPHERE_DATASTORE=vmw_iscsi_q01iso VSPHERE_FOLDER='/Scott-Home/vm/Templates/Linux' ova_download_directory='/path/to/ovas'"
+ansible-playbook -vv site.yml -e @/Users/sdustin/.cluster-api/clusterctl.yaml -e "VSPHERE_DATASTORE=my_vmware_datastore VSPHERE_FOLDER='/my-vmware-datacenter/vm/vm_vmware_folder' ova_download_directory='/path/to/ovas'"
 ```
