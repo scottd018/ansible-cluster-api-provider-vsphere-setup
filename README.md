@@ -54,7 +54,7 @@ VSPHERE_NETWORK: "VM Network"                                 # The VM network t
 VSPHERE_RESOURCE_POOL: "*/Resources"                          # The vSphere resource pool for your VMs
 VSPHERE_FOLDER: "vm"                                          # The VM folder for your VMs. Set to "" to use the root vSphere folder
 VSPHERE_TEMPLATE: "ubuntu-1804-kube-v1.17.3"                  # The VM template to use for your management cluster.
-VSPHERE_HAPROXY_TEMPLATE: "capv-haproxy-v0.6.0"  # The VM template to use for the HAProxy load balancer
+VSPHERE_HAPROXY_TEMPLATE: "capv-haproxy-v0.6.0"               # The VM template to use for the HAProxy load balancer
 VSPHERE_SSH_AUTHORIZED_KEY: "ssh-rsa AAAAB3N..."              # The public ssh authorized key on all machines
                                                               #   in this cluster.
                                                               #   Set to "" if you don't want to enable SSH,
