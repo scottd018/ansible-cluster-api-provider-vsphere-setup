@@ -8,7 +8,7 @@ cryptography==3.2
 enum34==1.1.9
 idna==2.9
 ipaddress==1.0.23
-Jinja2==2.11.1
+Jinja2==2.11.3
 lxml==4.5.0
 MarkupSafe==1.1.1
 pycparser==2.19
