@@ -15,7 +15,7 @@ pycparser==2.19
 pyOpenSSL==19.1.0
 pyvmomi==6.7.3
 PyYAML==5.4
-requests==2.23.0
+requests==2.31.0
 six==1.14.0
 suds-jurko==0.6
 urllib3==1.26.5
