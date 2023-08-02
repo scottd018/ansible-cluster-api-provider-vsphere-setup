@@ -4,7 +4,7 @@ ansible-lint==4.2.0
 certifi==2022.12.7
 cffi==1.14.0
 chardet==3.0.4
-cryptography==39.0.1
+cryptography==41.0.3
 enum34==1.1.9
 idna==2.9
 ipaddress==1.0.23
